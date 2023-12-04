@@ -18,3 +18,11 @@ Route::get('/', function () {
 });
 Route::resource('/Absensi', \App\Http\Controllers\AbsensiController::class);
 
+
+
+Route::get('/jquery', function (){
+    return view('jquery.main');
+});
+
+
+Route::resource('/siswa',\App\Http\Controllers\SiswaController::class);
