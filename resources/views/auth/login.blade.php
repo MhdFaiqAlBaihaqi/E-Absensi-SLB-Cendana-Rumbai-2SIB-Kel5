@@ -57,13 +57,6 @@
             background-color: #2980b9;
         }
 
-        .remember-me {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
         .error-message {
             color: red;
             margin-top: 10px;
@@ -94,16 +87,8 @@
                 <p class="error-message">{{ $message }}</p>
             @enderror
 
-            <div class="remember-me">
-                <label for="remember">
-                    <input type="checkbox" name="remember" id="remember"> Remember Me
-                </label>
-                <!-- Tambahkan elemen checkbox "Remember Me" -->
-            </div>
-
             <button type="submit">Login</button>
         </form>
-
         <p>Belum punya akun? <a href="{{ route('register') }}">Register</a></p>
     </div>
 

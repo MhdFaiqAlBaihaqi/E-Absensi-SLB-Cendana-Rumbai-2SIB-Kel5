@@ -17,7 +17,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $data = DB::select(DB::raw("SELECT * FROM users"));
+        $data = DB::select(DB::raw("SELECT * FROM user"));
         return view('user.index', compact('data'));
     }
 
