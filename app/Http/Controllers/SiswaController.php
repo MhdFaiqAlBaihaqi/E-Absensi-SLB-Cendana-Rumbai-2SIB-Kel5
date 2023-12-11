@@ -112,4 +112,19 @@ class SiswaController extends Controller
         //redirect to index
         return redirect()->route('siswa.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
+    public function absensi(Request $request, $id)
+    {
+        $siswa = Siswa::find($id);
+
+        if (!$siswa) {
+            return redirect()->route('siswa.index')->with(['error' => 'Siswa tidak ditemukan']);
+        }
+
+        $siswa->status_absensi = true;
+        $siswa->keterangan = $request->input('keterangan');
+        $siswa->tanggal_absensi = $request->input('tanggal_absensi');
+        $siswa->save();
+
+        return redirect()->route('siswa.index')->with(['success' => 'Absensi berhasil dilakukan untuk ' . $siswa->nama_siswa]);
+    }
 }

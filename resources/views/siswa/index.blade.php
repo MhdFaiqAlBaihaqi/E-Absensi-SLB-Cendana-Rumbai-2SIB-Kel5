@@ -1,3 +1,6 @@
+@extends('layouts/main')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +10,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Data Siswa</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ url('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ url('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         body {
@@ -79,7 +85,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-               
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}">Logout</a>
                 </li>
@@ -96,7 +101,6 @@
                             <h3 class="mb-0">Data Siswa</h3>
                             <div class="btn-container">
                                 <a href="{{ route('siswa.create') }}" class="btn btn-success">Tambah Data</a>
-                              
                             </div>
                         </div>
                     </div>
@@ -111,7 +115,7 @@
                             </div>
                         @endif
 
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="example1">
                             <thead>
                                 <tr>
                                     <th scope="col">Nama Siswa</th>
@@ -153,9 +157,64 @@
             </div>
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ url('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ url('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{ url('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+    <script src="{{ url('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{ url('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+    <script src="{{ url('plugins/jszip/jszip.min.js')}}"></script>
+    <script src="{{ url('plugins/pdfmake/pdfmake.min.js')}}"></script>
+    <script src="{{ url('plugins/pdfmake/vfs_fonts.js')}}"></script>
+    <script src="{{ url('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+    <script src="{{ url('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+    <script src="{{ url('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        });
+
+        // message with toastr
+        @if(session()->has('success'))
+            toastr.success('{{ session('success') }}', 'BERHASIL!');
+        @elseif(session()->has('error'))
+            toastr.error('{{ session('error') }}', 'GAGAL!');
+        @endif
+    </script>
+
 </body>
 
 </html>
+
+@endsection
+
+@section('css')
+<link rel="stylesheet" href="{{ url('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{ url('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{ url('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+@endsection
+
+@section('js')
+<script src="{{ url('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{ url('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{ url('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{ url('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+<script src="{{ url('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{ url('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{ url('plugins/jszip/jszip.min.js')}}"></script>
+<script src="{{ url('plugins/pdfmake/pdfmake.min.js')}}"></script>
+<script src="{{ url('plugins/pdfmake/vfs_fonts.js')}}"></script>
+<script src="{{ url('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+<script src="{{ url('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+<script src="{{ url('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+@endsection

@@ -6,12 +6,6 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use DB;
-namespace App\Http\Controllers;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Request;
-
 
 class UserController extends Controller
 {
@@ -81,10 +75,8 @@ class UserController extends Controller
     }
     public function logout()
     {
-        Auth::logout();
+       
 
         return redirect('/login')->with('success', 'Logout berhasil.');
     }
-   
-
 }

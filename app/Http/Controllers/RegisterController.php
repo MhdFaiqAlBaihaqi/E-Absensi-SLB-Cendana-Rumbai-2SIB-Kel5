@@ -30,6 +30,7 @@ class RegisterController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak sesuai',
         ]);
 
+        
         User::create([
             'name' => $request->name,
             'email' => $request->email,
