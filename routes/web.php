@@ -35,7 +35,7 @@ Route::get('/index', [UserController::class, 'index'])->name('user.index');
 
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::get('/absensi_input/{id}', [AbsensiController::class, 'input_absensi'])->name('register');
+Route::get('/absensi_input/{id?}', [AbsensiController::class, 'input_absensi'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 Route::resource('/siswa',\App\Http\Controllers\SiswaController::class);
 Route::resource('/absensi',\App\Http\Controllers\AbsensiController::class);

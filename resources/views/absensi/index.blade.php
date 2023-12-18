@@ -113,7 +113,8 @@
                             </thead>
                             <tbody>
                                 <?php 
-                                     $kelas =DB::select(DB::raw("select * from kelas"));
+                                
+                                     $kelas =DB::select(DB::raw("select * from kelas where id = ".Auth::user()->kelas));
                                     ?>
                                 @forelse ($kelas as $val)
                                     <tr>

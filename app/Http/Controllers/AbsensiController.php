@@ -5,7 +5,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Absensi;
 use DB;
-
+use Auth;
 class AbsensiController extends Controller
 {
     public function index()
