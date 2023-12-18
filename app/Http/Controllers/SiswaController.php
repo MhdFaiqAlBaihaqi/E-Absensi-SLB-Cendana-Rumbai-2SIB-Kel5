@@ -10,16 +10,11 @@ class SiswaController extends Controller
 
     public function index()
     {
-        $data=DB::select(DB::raw("select * from siswa1"));
+        $data=DB::select(DB::raw("SELECT siswa1.*, kelas.kelas as nama_kelas FROM `siswa1`, kelas WHERE siswa1.kelas=kelas.id"));
         return view('siswa.index', compact('data'));
     }
     
-    
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+ 
     public function create()
     {
         return view('siswa.create');

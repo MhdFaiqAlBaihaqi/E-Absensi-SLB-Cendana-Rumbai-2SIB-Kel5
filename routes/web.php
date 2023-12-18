@@ -7,7 +7,9 @@ use App\Http\Controllers\RegisterController;
 
 use App\Http\Controllers\AbsensiController;
 
-Route::resource('absensi', AbsensiController::class);
+
+
+Route::get('/absensi', [AbsensiController::class, 'index']);
 
 // Welcome page
 Route::get('/', function () {
@@ -33,5 +35,25 @@ Route::get('/index', [UserController::class, 'index'])->name('user.index');
 
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::get('/absensi_input/{id}', [AbsensiController::class, 'input_absensi'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 Route::resource('/siswa',\App\Http\Controllers\SiswaController::class);
+Route::resource('/absensi',\App\Http\Controllers\AbsensiController::class);
+Route::resource('/user', UserController::class);
+
+// Assuming you have an 'index' method in UserController
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('user')->group(function () {
+        Route::get('/index', [UserController::class, 'index'])->name('user.index');
+    });
+
+    // routes/web.php
+
+
+
+Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+Route::get('/absensi/create', [AbsensiController::class, 'create'])->name('absensi.create');
+Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
+// ... (Tambahkan rute-rute lainnya sesuai kebutuhan)
+
+});

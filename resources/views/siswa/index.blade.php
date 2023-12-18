@@ -77,19 +77,8 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#">Data Siswa</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}">Logout</a>
-                </li>
-            </ul>
-        </div>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="nav-link" href="{{ route('logout') }}">Logout</a>
     </nav>
 
     <div class="container mt-5">
@@ -129,7 +118,7 @@
                                 @forelse ($data as $siswa)
                                     <tr>
                                         <td>{{ $siswa->nama_siswa }}</td>
-                                        <td>{{ $siswa->kelas }}</td>
+                                        <td>{{ $siswa->nama_kelas }}</td>
                                         <td>{{ $siswa->jenis_kelamin }}</td>
                                         <td>{{ $siswa->alamat }}</td>
                                         <td class="text-center">
