@@ -1,4 +1,4 @@
-@extends('layouts/main')
+@extends('layouts.main')
 
 @section('content')
 <!DOCTYPE html>
@@ -8,13 +8,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Data Siswa</title>
+    <title>Data Absensi</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ url('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ url('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    @section('css')
+    <link rel="stylesheet" href="{{ url('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ url('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ url('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+    @endsection
     <style>
         body {
             background-color: #f8f9fa;
@@ -65,61 +69,27 @@
             font-size: 18px;
         }
 
-        .btn-container .btn {
-            margin-right: 5px;
-        }
-
-        .btn-container .btn i {
-            margin-right: 5px;
-        }
-
-        .btn-success,
-        .btn-danger,
-        .btn-primary,
-        .btn-light {
+        .btn-success {
+            background: #28a745;
             border: 0;
         }
 
-        .btn-custom {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-
-        .btn-custom:hover {
-            background-color: white;
-            color: black;
-            border: 2px solid #4CAF50;
+        .btn-danger {
+            background: #dc3545;
+            border: 0;
         }
     </style>
 </head>
 
 <body>
-    
-
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                    <h1 class="user-welcome">Selamat Datang, {{ Auth::user()->name }}!</h1>
                         <div class="d-flex justify-content-between align-items-center">
-                            <h3 class="mb-0">Data Siswa</h3>
-                            <div class="btn-container">
-                            <a href="{{ route('siswa.create') }}" class="btn btn-light">
-                                        <i class="fa fa-plus"></i> Tambah Data Siswa
-                                    </a>
-                                   
-                            </div>
+                            <h3 class="mb-0">Data History Absensi</h3>
+                            
                         </div>
                     </div>
                     <div class="card-body">
@@ -132,27 +102,56 @@
                                 {{ session('error') }}
                             </div>
                         @endif
+                        <div class="absensi-table">
+                            <?php
+                            $userRole = Auth::user()->role;
+                            $isAdminWithFullAccess = ($userRole == 'admin' || $userRole == 'Admin');
 
-                        <table class="table table-bordered" id="example1">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Nama Siswa</th>
-                                    <th scope="col">Kelas</th>
-                                    <th scope="col">Jenis Kelamin</th>
-                                    <th scope="col">Alamat</th>
-                                    <th scope="col">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($data as $siswa)
+                            $dataAbsensi = DB::table('absensi_siswa')
+                                ->join('siswa1', 'absensi_siswa.id_siswa', '=', 'siswa1.id')
+                                ->join('absensi', 'absensi_siswa.absensi_id', '=', 'absensi.absensi_id')
+                                ->join('kelas', 'siswa1.kelas', '=', 'kelas.id')
+                                ->select(
+                                    'absensi_siswa.absensisiswa_id',
+                                    'siswa1.nama_siswa',
+                                    'absensi.absensi_tanggal',
+                                    'absensi_siswa.keterangan',
+                                    'absensi.absensi_keterangan',
+                                    'kelas.kelas'
+                                );
+
+                            if (!$isAdminWithFullAccess) {
+                                $classId = Auth::user()->kelas;
+                                $dataAbsensi->where('siswa1.kelas', $classId);
+                            }
+
+                            $dataAbsensi = $dataAbsensi->get();
+                            ?>
+                            <table class="table table-bordered" id="example1">
+                                <thead>
                                     <tr>
-                                        <td>{{ $siswa->nama_siswa }}</td>
-                                        <td>{{ $siswa->nama_kelas }}</td>
-                                        <td>{{ $siswa->jenis_kelamin }}</td>
-                                        <td>{{ $siswa->alamat }}</td>
-                                        <td class="text-center">
-                                            <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('siswa.destroy', $siswa->id) }}" method="post">
-                                                <a href="{{ route('siswa.edit', $siswa->id) }}" class="btn btn-primary btn-sm">
+                                        <th scope="col">Tanggal</th>
+                                        <th scope="col">Nama Siswa</th>
+                                        <th scope="col">Kelas</th>
+                                        <th scope="col">Keterangan</th>
+                                        <th scope="col">Mapel</th>
+                                        <th scope="col">Ttd</th>
+                                        <th scope="col">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($dataAbsensi as $absensi)
+                                        <tr>
+                                            <td>{{ $absensi->absensi_tanggal }}</td>
+                                            <td>{{ $absensi->nama_siswa }}</td>
+                                            <td>{{ $absensi->kelas }}</td>
+                                            <td>{{ $absensi->keterangan }}</td>
+                                            <td>{{ $absensi->absensi_keterangan }}</td>
+                                            <td></td>
+                                            <td class="text-center">
+                                             
+                                                <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('absensi.destroy', $absensi->absensisiswa_id) }}" method="post">
+                                                <a href="{{ route('absensi.edit', $absensi->absensisiswa_id) }}" class="btn btn-primary btn-sm">
                                                     <i class="fa fa-edit"></i> Edit
                                                 </a>
                                                 @csrf
@@ -161,19 +160,20 @@
                                                     <i class="fa fa-trash"></i> Hapus
                                                 </button>
                                             </form>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center">
-                                            <div class="alert alert-info">
-                                                Data siswa belum tersedia.
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="{{ !$isAdminWithFullAccess ? '6' : '5' }}" class="text-center">
+                                                <div class="alert alert-danger">
+                                                    Data absensi belum tersedia.
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -240,3 +240,4 @@
 <script src="{{ url('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{ url('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
 @endsection
+

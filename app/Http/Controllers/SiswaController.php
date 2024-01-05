@@ -20,17 +20,6 @@ class SiswaController extends Controller
         return view('siswa.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
- 
-
-  
-
- 
      public function store(Request $request)
      {
          $this->validate($request, [
@@ -46,15 +35,6 @@ class SiswaController extends Controller
          return redirect()->route('siswa.index')->with(['success' => 'Data berhasil Disimpan!']);
      }
      
-     
-    
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
@@ -72,13 +52,7 @@ class SiswaController extends Controller
         return view('siswa.edit', compact('data'));
       
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -93,13 +67,6 @@ class SiswaController extends Controller
     
         return redirect()->route('siswa.index')->with(['success' => 'Data Berhasil Diupdate']);
     }
-    
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         DB::table('siswa1')->where('id', $id)->delete();
@@ -107,19 +74,11 @@ class SiswaController extends Controller
         //redirect to index
         return redirect()->route('siswa.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
-    public function absensi(Request $request, $id)
+
+    public function showSiswa()
     {
-        $siswa = Siswa::find($id);
-
-        if (!$siswa) {
-            return redirect()->route('siswa.index')->with(['error' => 'Siswa tidak ditemukan']);
-        }
-
-        $siswa->status_absensi = true;
-        $siswa->keterangan = $request->input('keterangan');
-        $siswa->tanggal_absensi = $request->input('tanggal_absensi');
-        $siswa->save();
-
-        return redirect()->route('siswa.index')->with(['success' => 'Absensi berhasil dilakukan untuk ' . $siswa->nama_siswa]);
-    }
+ 
+        $data=DB::select(DB::raw("SELECT siswa1.*, kelas.kelas as nama_kelas FROM `siswa1`, kelas WHERE siswa1.kelas=kelas.id"));
+        return view('siswa.index', compact('data'));
+}
 }

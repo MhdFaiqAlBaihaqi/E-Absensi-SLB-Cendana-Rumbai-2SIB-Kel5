@@ -6,17 +6,15 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use DB;
+use App\Models\User;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $data = DB::select(DB::raw("SELECT * FROM user"));
+        $data = DB::select(DB::raw("SELECT * FROM users"));
         return view('user.index', compact('data'));
     }
-
-    // ... (Other methods)
-
     public function create()
     {
         return view('user.create');
@@ -24,52 +22,57 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'nip' => 'required',
-            'nama' => 'required',
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
             'role' => 'required',
-            'password'=>'required',
-          
+            'kelas' => 'required',
         ]);
-
-        DB::insert("INSERT INTO `user` (`id`, `nip`, `nama`, `role`, `password`) VALUES (uuid(), ?, ?, ?, ?)",
-        [$request->nip, $request->nama, $request->role, $request->password]);
-    return redirect()->route('user.index')->with(['success' => 'Data berhasil Disimpan!']);
-    }
     
+        // Menggunakan Eloquent untuk menyimpan data
+        User::create([
+            'id' => Str::uuid()->toString(),
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+            'kelas' => $request->kelas,
+        ]);
+    
+        return redirect()->route('user.index')->with(['success' => 'Data berhasil Disimpan!']);
+    }
 
+   
     public function edit($id)
     {
-        $data = DB::table('user')->where('id', $id)->first();
+        $data = DB::table('users')->where('id', $id)->first();
         return view('user.edit', compact('data'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nip' => 'required',
-            'nama' => 'required',
+           
+            'name' => 'required',
+            'email' => 'required',           
             'role' => 'required',
-            'password' => 'required'
+            
         ]);
 
         $updateData = [
-            'nip' => $request->nip,
-            'nama' => $request->nama,
+            'name' => $request->name,
+            'email' => $request->email,         
             'role' => $request->role,
-            'password' => $request->password,
         ];
-
-      
-
-        DB::table('user')->where('id', $id)->update($updateData);
+        DB::table('users')->where('id', $id)->update($updateData);
 
         return redirect()->route('user.index')->with(['success' => 'Data Berhasil Diupdate']);
     }
 
     public function destroy($id)
     {
-        DB::table('user')->where('id', $id)->delete();
+        DB::table('users')->where('id', $id)->delete();
 
         return redirect()->route('user.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
@@ -78,5 +81,15 @@ class UserController extends Controller
        
 
         return redirect('/login')->with('success', 'Logout berhasil.');
+    }
+    public function show()
+    {
+        //
+    }
+    public function showUser()
+    {
+     
+        $data = DB::select(DB::raw("SELECT * FROM users"));
+        return view('user.index', compact('data'));
     }
 }

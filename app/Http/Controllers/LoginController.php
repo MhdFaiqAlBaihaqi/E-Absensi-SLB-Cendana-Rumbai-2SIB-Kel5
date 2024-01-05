@@ -20,16 +20,22 @@ class LoginController extends Controller
     }
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
+        $credentials = $request->only('email', 'password');    
         if (Auth::attempt($credentials)) {
-            // Pengguna berhasil login, arahkan ke halaman yang sesuai
-            return redirect()->intended('/siswa');
+            $user = Auth::user();
+    
+            // Membandingkan peran tanpa memperhatikan perbedaan kapitalisasi
+            if (strcasecmp($user->role, 'admin') === 0) {
+                return redirect()->intended('/siswa');
+            } else {
+                return redirect()->intended('/absensi');
+            }
         }
-
-        // Jika login gagal, arahkan kembali ke halaman login dengan pesan error
-        return redirect()->back()->with('error', 'Email atau password salah.');
+        
+        // Tambahan kode untuk menangani kasus gagal login (jika diperlukan)
+        return redirect()->route('login')->with(['error' => 'Email atau password salah']);
     }
+    
 
     public function logout()
     {
