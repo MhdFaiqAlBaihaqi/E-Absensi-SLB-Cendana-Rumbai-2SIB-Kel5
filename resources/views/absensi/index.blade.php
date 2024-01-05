@@ -122,17 +122,7 @@
                         $kelas = DB::select(DB::raw("select * from kelas where id = ".Auth::user()->kelas));
                         $isAdmin = Auth::user()->role == 'admin';
                         $kelas = $isAdmin ? DB::select(DB::raw("select * from kelas")) : DB::select(DB::raw("select * from kelas where id = ".Auth::user()->kelas));
-                    ?>
-                    @forelse ($kelas as $val)
-                        <a href="{{ url('absensi_input/'.$val->id) }}" class="btn btn-primary">{{ $val->kelas }} - Input Absen</a>
-                    @empty
-                        <div class="alert">
-                            Data absensi belum tersedia.
-                        </div>
-                    @endforelse
-                </div>
-                <div class="absensi-table">
-    <?php
+                   
        
 
             $classId = Auth::user()->kelas;
