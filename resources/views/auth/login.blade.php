@@ -78,7 +78,7 @@
             <label for="email">Email:</label>
             <input type="text" name="email" value="{{ old('email') }}" required>
             @error('email')
-                <p class="error-message">{{ $message }}</p>
+                <p class="fas fa-envelope">{{ $message }}</p>
             @enderror
 
             <label for="password">Password:</label>

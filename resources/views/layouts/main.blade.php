@@ -50,46 +50,62 @@
             <div class="sidebar">
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
+                   
                     <div class="info">
                         <h2 class="user-welcome text-white">{{ Auth::user()->name }}</h2>
                     </div>
                 </div>
 
                 @if(auth()->user()->role !== 'guru')
-                    <a class="nav-link" href="{{ route('user.showUser') }}">
-                        <button class="btn btn-block btn-outline-light">
-                            <i class="fas fa-users"></i> Data User
-                        </button>
-                    </a>
-                    <a class="nav-link" href="{{ route('siswa.showSiswa') }}">
-                        <button class="btn btn-block btn-outline-light">
-                            <i class="fas fa-user-graduate"></i> Data Siswa
-                        </button>
-                    </a>
-                @endif
+    <a class="nav-link" href="{{ route('user.showUser') }}">
+        <button class="btn btn-block btn-outline-light">
+            <i class="fas fa-users"></i> Data User
+        </button>
+    </a>
+    <a class="nav-link" href="{{ route('siswa.showSiswa') }}">
+        <button class="btn btn-block btn-outline-light">
+            <i class="fas fa-user-graduate"></i> Data Siswa
+        </button>
+    </a>
+    <div class="row mb-2">
+    <div class="col-md-12">
+        <a class="nav-link" href="{{ route('absensi.history') }}">
+            <button class="btn btn-block btn-outline-light">
+                <i class="fas fa-history"></i> History 
+            </button>
+        </a>
+    </div>
+</div> 
+<a class="nav-link" href="{{ route('absensi.Rekap') }}">
+        <button class="btn btn-block btn-outline-light">
+            <i class="fas fa-chart-bar"></i> Rekap
+        </button>
+    </a>
 
-                @if(auth()->user()->role == 'guru')
+ 
+@endif
+
+@if(auth()->user()->role == 'guru')
     @php
         $kelas = Auth::user()->role == 'admin' ? DB::select(DB::raw("SELECT * FROM kelas")) : DB::select(DB::raw("SELECT * FROM kelas WHERE id = ".Auth::user()->kelas));
     @endphp
 
     @forelse ($kelas as $val)
-    
-   
-    <div class="row mb-2">
-    <div class="col-md-12">
-        <a class="nav-link" href="{{ url('absensi_input/'.$val->id) }}">
-            <button class="btn btn-block btn-outline-light">
-                <i class="fas fa-edit"></i> Input Absen
-            </button>
-        </a>
-    </div>
-</div>
-
-
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <a class="nav-link" href="{{ url('absensi_input/'.$val->id) }}">
+                    <button class="btn btn-block btn-outline-light">
+                        <i class="fas fa-edit"></i> Input Absen
+                    </button>
+                </a>
+            </div>
+        </div>
+        <a class="nav-link" href="{{ route('absensi.history') }}">
+        <button class="btn btn-block btn-outline-light">
+            <i class="fas fa-history"></i> History
+        </button>
+    </a>
+      
     @empty
         <div class="alert">
             Data absensi belum tersedia.
@@ -97,15 +113,7 @@
     @endforelse
 @endif
 
-<div class="row mb-2">
-    <div class="col-md-12">
-        <a class="nav-link" href="{{ route('absensi.history') }}">
-            <button class="btn btn-block btn-outline-light">
-                <i class="fas fa-history"></i> History
-            </button>
-        </a>
-    </div>
-</div>
+
 
 <div class="row mb-2">
     <div class="col-md-12">
@@ -116,6 +124,7 @@
         </a>
     </div>
 </div>
+
 
             <!-- /.sidebar -->
         </aside>

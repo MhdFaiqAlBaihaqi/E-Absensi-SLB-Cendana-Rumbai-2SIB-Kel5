@@ -82,20 +82,48 @@ class AbsensiController extends Controller
       
         return redirect()->route('absensi.history')->with(['success' => 'Data Berhasil Dihapus!']);
     }
-public function History() {
-    $data = DB::table('absensi_siswa')
-        ->join('siswa1', 'absensi_siswa.id_siswa', '=', 'siswa1.id')
-        ->join('absensi', 'absensi_siswa.absensi_id', '=', 'absensi.absensi_id')
-        ->join('kelas', 'siswa1.kelas', '=', 'kelas.id')
-        ->select('absensi_siswa.absensisiswa_id', 'siswa1.nama_siswa', 'absensi.absensi_tanggal', 'absensi_siswa.keterangan', 'absensi_keterangan', 'kelas.kelas')
-        ->get();
-
+    public function History() {
+        $data = DB::table('absensi_siswa')
+                            ->join('siswa1', 'absensi_siswa.id_siswa', '=', 'siswa1.id')
+                            ->join('absensi', 'absensi_siswa.absensi_id', '=', 'absensi.absensi_id')
+                            ->join('kelas', 'siswa1.kelas', '=', 'kelas.id')
+                            ->join('users', 'users.id',  'kelas.kelas') // Sesuaikan join condition dengan relasi sebenarnya
+                            ->select(
+                                'absensi_siswa.absensisiswa_id',
+                                'siswa1.nama_siswa',
+                                'absensi.absensi_tanggal',
+                                'absensi_siswa.keterangan',
+                                'absensi.absensi_keterangan',
+                                'kelas.kelas',
+                                'users.name as name'
+                            );
+   
+    
     return view('absensi.history', ['data' => $data]);
 }
 
     
-    
-    
+public function Rekap() {
+    $data = DB::table('absensi_siswa')
+                        ->join('siswa1', 'absensi_siswa.id_siswa', '=', 'siswa1.id')
+                        ->join('absensi', 'absensi_siswa.absensi_id', '=', 'absensi.absensi_id')
+                        ->join('kelas', 'siswa1.kelas', '=', 'kelas.id')
+                        ->join('users', 'users.id',  'kelas.kelas') // Sesuaikan join condition dengan relasi sebenarnya
+                        ->select(
+                            'absensi_siswa.absensisiswa_id',
+                            'siswa1.nama_siswa',
+                            'absensi.absensi_tanggal',
+                            'absensi_siswa.keterangan',
+                            'absensi.absensi_keterangan',
+                            'kelas.kelas',
+                            'users.name as name'
+                  
+                        );
+
+                        $data = DB::select(DB::raw("SELECT * FROM absensi_siswa"));
+                        return view('absensi.Rekap', compact('data'));
+}
     
 }
+
 

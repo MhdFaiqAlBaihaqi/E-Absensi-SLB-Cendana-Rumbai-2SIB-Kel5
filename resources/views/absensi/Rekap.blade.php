@@ -78,6 +78,22 @@
             background: #dc3545;
             border: 0;
         }
+
+        /* Additional styles for centering text in specific cells */
+        .center-text {
+            text-align: center;
+        }
+        .kelas-column {
+        width: 10%;
+    }
+
+    .wali-kelas-column {
+        width: 10%;
+    }
+
+    .nama-siswa-column {
+        width: 25%; /* Adjust the width based on your preference */
+    }
     </style>
 </head>
 
@@ -89,7 +105,6 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <h3 class="mb-0">Data History Absensi</h3>
-                            
                         </div>
                     </div>
                     <div class="card-body">
@@ -104,80 +119,127 @@
                         @endif
                         <div class="absensi-table">
                             <?php
-                            $userRole = Auth::user()->role;
-                            $isAdminWithFullAccess = ($userRole == 'admin' || $userRole == 'Admin');
-
-                            $dataAbsensi = DB::table('absensi_siswa')
+                                $userRole = Auth::user()->role;
+                                $isAdminWithFullAccess = ($userRole == 'admin' || $userRole == 'Admin');
+                                $dataAbsensi = DB::table('absensi_siswa')
                                 ->join('siswa1', 'absensi_siswa.id_siswa', '=', 'siswa1.id')
                                 ->join('absensi', 'absensi_siswa.absensi_id', '=', 'absensi.absensi_id')
                                 ->join('kelas', 'siswa1.kelas', '=', 'kelas.id')
+                                ->join('users', 'users.kelas', '=', 'kelas.id') // Sesuaikan dengan kolom yang sesuai
                                 ->select(
                                     'absensi_siswa.absensisiswa_id',
                                     'siswa1.nama_siswa',
                                     'absensi.absensi_tanggal',
                                     'absensi_siswa.keterangan',
                                     'absensi.absensi_keterangan',
-                                    'kelas.kelas'
+                                    'kelas.kelas',
+                                    'users.name' // Ambil kolom 'name' dari tabel 'users'
                                 );
-                                $data = DB::table('absensi_siswa')
-        ->join('siswa1', 'absensi_siswa.id_siswa', '=', 'siswa1.id')
-        ->join('absensi', 'absensi_siswa.absensi_id', '=', 'absensi.absensi_id')
-        ->join('kelas', 'siswa1.kelas', '=', 'kelas.id')
-        ->select('absensi_siswa.absensisiswa_id', 'siswa1.nama_siswa', 'absensi.absensi_tanggal', 'absensi_siswa.keterangan', 'absensi_keterangan', 'kelas.kelas')
-        ->get();
+                                $dataAbsensi = $dataAbsensi->get();
 
-                            if (!$isAdminWithFullAccess) {
-                                $classId = Auth::user()->kelas;
-                                $dataAbsensi->where('siswa1.kelas', $classId);
-                            }
+                                if (!$isAdminWithFullAccess) {
+                                    $classId = Auth::user()->kelas;
+                                    $dataAbsensi->where('siswa1.kelas', $classId);
+                                }
 
-                            $dataAbsensi = $dataAbsensi->get();
+                                // Membuat array untuk menyimpan data absensi
+                                $absensiData = [];
+
+                                // Mengisi data absensi pada setiap tanggal
+                                foreach ($dataAbsensi as $absensi) {
+                                    $absensiData[$absensi->absensi_tanggal][$absensi->nama_siswa] = $absensi->keterangan;
+                                }
                             ?>
-                            <table class="table table-bordered" id="example1">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Tanggal</th>
-                                        <th scope="col">Nama Siswa</th>
-                                        <th scope="col">Kelas</th>
-                                        <th scope="col">Keterangan</th>
-                                        <th scope="col">Mapel</th>
-                                        <th scope="col">Ttd</th>
-                                        <th scope="col">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($dataAbsensi as $absensi)
-                                        <tr>
-                                            <td>{{ $absensi->absensi_tanggal }}</td>
-                                            <td>{{ $absensi->nama_siswa }}</td>
-                                            <td>{{ $absensi->kelas }}</td>
-                                            <td>{{ $absensi->keterangan }}</td>
-                                            <td>{{ $absensi->absensi_keterangan }}</td>
-                                            <td></td>
-                                            <td class="text-center">
-                                             
-                                                <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('absensi.destroy', $absensi->absensisiswa_id) }}" method="post">
-                                                <a href="{{ route('absensi.edit', $absensi->absensisiswa_id) }}" class="btn btn-primary btn-sm">
-                                                    <i class="fa fa-edit"></i> Edit
-                                                </a>
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <i class="fa fa-trash"></i> Hapus
-                                                </button>
-                                            </form>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="{{ !$isAdminWithFullAccess ? '6' : '5' }}" class="text-center">
-                                                <div class="alert alert-danger">
-                                                    Data absensi belum tersedia.
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
+
+                            <table border="1" style="width: 100%;">
+                                <tr>
+                                    <td colspan="7" align="center"><strong>YAYASAN PENDIDIKAN CENDANA RIAU</strong></td>
+                                    <td colspan="34"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" align="center"><strong>SLB CENDANA PEKANBARU</strong></td>
+                                    <td colspan="34"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" align="center"><strong>DAFTAR HADIR SISWA TATAP MUKA</strong></td>
+                                    <td colspan="34"></td>
+                                </tr>
+                                <tr>
+                                <td>BULAN : {{ \Carbon\Carbon::now()->format('F Y') }}</td>
+
+
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="31" align="center">Tanggal</td>
+                                    <td colspan="3" class="center-text">Jumlah</td>
+                                    <td colspan="31"></td>
+                                </tr>
+                             <tr>
+    <td rowspan="4">KELAS</td>
+    <td rowspan="4">WALI KELAS</td>
+    <td rowspan="4">NAMA SISWA</td>
+    
+    <!-- Loop for days -->
+    @for ($day = 1; $day <= 31; $day++)
+        <td>{{ $day }}</td>
+    @endfor
+    
+    <td>S</td>
+    <td>I</td>
+    <td>H</td>
+</tr>
+
+                           <!-- ... Your table header ... -->
+<tbody>
+    @php
+        $uniqueSiswaNames = $dataAbsensi->pluck('nama_siswa')->unique();
+    @endphp
+
+    @forelse($uniqueSiswaNames as $siswaName)
+        <tr>
+            <td>{{ $dataAbsensi->where('nama_siswa', $siswaName)->first()->kelas }}</td>
+            <td>{{ $dataAbsensi->where('nama_siswa', $siswaName)->first()->name }}</td>
+            <td>{{ $siswaName }}</td>
+            <td>{{ $dataAbsensi->where('nama_siswa', $siswaName)->first()->keterangan }}</td>
+
+            <!-- Loop for days -->
+            @for ($day = 1; $day <= 31; $day++)
+                <td>
+                    @php
+                        // Format the day with leading zero if needed
+                        $formattedDay = sprintf("%02d", $day);
+
+                        // Create the date string in 'Y-m-d' format
+                        $currentDate = "2023-10-$formattedDay";
+
+                        // Check if there is data for the current day
+                        $attendanceForDay = isset($absensiData[$currentDate][$siswaName]) ? $absensiData[$currentDate][$siswaName] : null;
+                    @endphp
+
+                    @if ($attendanceForDay)
+                        {{ $attendanceForDay }}
+                    @else
+                        <!-- If no data, display empty -->
+                        -
+                    @endif
+                </td>
+            @endfor
+
+            <td></td>
+
+            <td></td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="{{ !$isAdminWithFullAccess ? '40' : '39' }}" class="text-center">
+                <div class="alert alert-danger">
+                    Data absensi belum tersedia.
+                </div>
+            </td>
+        </tr>
+    @endforelse
+</tbody>
+<!-- ... Your table footer ... -->
                             </table>
                         </div>
                     </div>
@@ -212,14 +274,29 @@
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
 
-        // message with toastr
         @if(session()->has('success'))
             toastr.success('{{ session('success') }}', 'BERHASIL!');
         @elseif(session()->has('error'))
             toastr.error('{{ session('error') }}', 'GAGAL!');
         @endif
     </script>
-
+    <nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 </body>
 
 </html>
@@ -231,19 +308,3 @@
 <link rel="stylesheet" href="{{ url('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{ url('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 @endsection
-
-@section('js')
-<script src="{{ url('plugins/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{ url('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{ url('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-<script src="{{ url('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-<script src="{{ url('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
-<script src="{{ url('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
-<script src="{{ url('plugins/jszip/jszip.min.js')}}"></script>
-<script src="{{ url('plugins/pdfmake/pdfmake.min.js')}}"></script>
-<script src="{{ url('plugins/pdfmake/vfs_fonts.js')}}"></script>
-<script src="{{ url('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
-<script src="{{ url('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
-<script src="{{ url('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-@endsection
-
