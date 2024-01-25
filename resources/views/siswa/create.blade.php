@@ -1,9 +1,9 @@
 @extends('layouts/main')
 
 @section('content')
-    <div class="container mt-5 mb-5">
+    <div class="container-fluid mt-6 mb-6">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card shadow rounded">
                     <div class="card-header bg-primary text-white">
                         <h4 class="mb-0 font-weight-bold">Tambah Siswa</h4>
@@ -53,13 +53,12 @@
                                 @enderror
                             </div>
                             <div class="row">
-                            <div class="col-md-6">
+                                <div class="col-md-6">
                                     <button type="reset" class="btn btn-warning btn-block">Reset</button>
                                 </div>
                                 <div class="col-md-6">
                                     <button type="submit" class="btn btn-primary btn-block">Simpan</button>
                                 </div>
-                                
                             </div>
                         </form>
                     </div>

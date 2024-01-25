@@ -1,10 +1,10 @@
 @extends('layouts/main')
 
 @section('content')
-    <div class="container mt-5 mb-5">
+    <div class="container-fluid mt-6 mb-6">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card border-0 shadow rounded">
+            <div class="col-md-12">
+                <div class="card shadow rounded">
                     <div class="card-body">
                         <form action="{{ route('user.store') }}" method="post" enctype="multipart/form-data">
                             @csrf

@@ -30,7 +30,7 @@ Route::resource('/absensi',\App\Http\Controllers\AbsensiController::class);
 Route::resource('/user',\App\Http\Controllers\UserController::class);
 Route::resource('/user', UserController::class);
 Route::get('/showUser', [UserController::class, 'showUser'])->name('user.showUser');
-Route::get('Rekap', [AbsensiController::class, 'Rekap'])->name('absensi.Rekap');
+Route::get('Rekap/{month?}/{year?}', [AbsensiController::class, 'Rekap'])->name('absensi.Rekap');
 Route::get('history', [AbsensiController::class, 'history'])->name('absensi.history');
 Route::get('/showSiswa', [SiswaController::class, 'showSiswa'])->name('siswa.showSiswa');
 

@@ -117,8 +117,7 @@
                             <div class="btn-container">
                             <a href="{{ route('siswa.create') }}" class="btn btn-light">
                                         <i class="fa fa-plus"></i> Tambah Data Siswa
-                                    </a>
-                                   
+                                    </a>                                   
                             </div>
                         </div>
                     </div>

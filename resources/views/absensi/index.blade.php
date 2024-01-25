@@ -15,85 +15,88 @@
     <link rel="stylesheet" href="{{ url('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
+    body {
+        background-color: #f8f9fa;
+    }
 
-        .container {
-            margin-top: 50px;
-        }
+    .container {
+        margin-top: 50px;
+    }
 
-        .card {
-            border: 0;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    .card {
+        border: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-        .card-header {
-            background: #007bff;
-            color: #ffffff;
-            border-bottom: 0;
-        }
+    .card-header {
+        background: #007bff;
+        color: #ffffff;
+        border-bottom: 0;
+    }
 
-        .btn-container {
-            margin-bottom: 15px;
-        }
+    .btn-container {
+        margin-bottom: 15px;
+    }
 
-        .navbar {
-            background-color: #007bff;
-        }
+    .navbar {
+        background-color: #007bff;
+    }
 
-        .navbar-brand,
-        .navbar-nav .nav-link {
-            color: #ffffff !important;
-        }
+    .navbar-brand,
+    .navbar-nav .nav-link {
+        color: #ffffff !important;
+    }
 
-        .table {
-            background: #ffffff;
-            border: 1px solid #dee2e6;
-        }
+    .table {
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        width: 100%; /* Set the width to 100% */
+        margin-bottom: 0; /* Optional: Remove margin-bottom for better alignment */
+    }
 
-        .table th,
-        .table td {
-            border: 1px solid #dee2e6;
-            text-align: center;
-        }
+    .table th,
+    .table td {
+        border: 1px solid #dee2e6;
+        text-align: center;
+    }
 
-        .alert {
-            border-radius: 0;
-            text-align: center;
-            font-size: 18px;
-        }
+    .alert {
+        border-radius: 0;
+        text-align: center;
+        font-size: 18px;
+    }
 
-        .btn-success {
-            background: #28a745;
-            border: 0;
-        }
+    .btn-success {
+        background: #28a745;
+        border: 0;
+    }
 
-        .btn-danger {
-            background: #dc3545;
-            border: 0;
-        }
+    .btn-danger {
+        background: #dc3545;
+        border: 0;
+    }
 
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .user-welcome {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-        }
+    .user-welcome {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffffff;
+    }
 
-        .absensi-table {
-            margin-top: 20px;
-        }
+    .absensi-table {
+        margin-top: 30px;
+    }
 
-        .absensi-btn-container {
-            margin-top: 20px;
-        }
-    </style>
+    .absensi-btn-container {
+        margin-top: 20px;
+    }
+</style>
+
 </head>
 
 <body>

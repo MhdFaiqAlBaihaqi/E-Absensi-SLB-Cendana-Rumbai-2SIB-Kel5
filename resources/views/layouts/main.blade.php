@@ -15,7 +15,6 @@
 
     @yield('css')
 </head>
-
 <body class="sidebar-mini" style="height: auto;">
     <div class="wrapper">
         <!-- Navbar -->

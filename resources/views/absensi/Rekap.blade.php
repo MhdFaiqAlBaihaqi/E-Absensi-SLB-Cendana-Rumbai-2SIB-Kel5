@@ -128,7 +128,7 @@
                                 ->join('users', 'users.kelas', '=', 'kelas.id') // Sesuaikan dengan kolom yang sesuai
                                 ->select(
                                     'absensi_siswa.absensisiswa_id',
-                                    'siswa1.nama_siswa',
+                                    'siswa1.nama_siswa',    
                                     'absensi.absensi_tanggal',
                                     'absensi_siswa.keterangan',
                                     'absensi.absensi_keterangan',
@@ -200,30 +200,38 @@
             <td>{{ $dataAbsensi->where('nama_siswa', $siswaName)->first()->kelas }}</td>
             <td>{{ $dataAbsensi->where('nama_siswa', $siswaName)->first()->name }}</td>
             <td>{{ $siswaName }}</td>
-            <td>{{ $dataAbsensi->where('nama_siswa', $siswaName)->first()->keterangan }}</td>
+            <td>{{ $dataAbsensi->where('nama_siswa', $siswaName)->first()->absensi_keterangan }}</td>
+            
 
             <!-- Loop for days -->
-            @for ($day = 1; $day <= 31; $day++)
-                <td>
-                    @php
-                        // Format the day with leading zero if needed
-                        $formattedDay = sprintf("%02d", $day);
+@for ($day = 1; $day <= 31; $day++)
+    <td>
+        @php
+            // Format the day with leading zero if needed
+            $formattedDay = sprintf("%02d", $day);
 
-                        // Create the date string in 'Y-m-d' format
-                        $currentDate = "2023-10-$formattedDay";
+            // Create the date string in 'Y-m-d' format
+            $currentDate = "2023-10-$formattedDay";
 
-                        // Check if there is data for the current day
-                        $attendanceForDay = isset($absensiData[$currentDate][$siswaName]) ? $absensiData[$currentDate][$siswaName] : null;
-                    @endphp
+            // Check if there is data for the current day
+            $attendanceForDay = isset($absensiData[$currentDate][$siswaName]) ? $absensiData[$currentDate][$siswaName] : null;
+        @endphp
 
-                    @if ($attendanceForDay)
-                        {{ $attendanceForDay }}
-                    @else
-                        <!-- If no data, display empty -->
-                        -
-                    @endif
-                </td>
-            @endfor
+        @if ($attendanceForDay)
+            <!-- If there is data for the current day, check if there is a keterangan -->
+            @if ($dataAbsensi->where('absensi_tanggal', $currentDate)->where('nama_siswa', $siswaName)->first()->keterangan)
+                {{ $dataAbsensi->where('absensi_tanggal', $currentDate)->where('nama_siswa', $siswaName)->first()->keterangan }}
+            @else
+                <!-- If no keterangan, display a placeholder -->
+                -
+            @endif
+        @else
+            <!-- If no data, display empty -->
+            -
+        @endif
+    </td>
+@endfor
+                                
 
             <td></td>
 

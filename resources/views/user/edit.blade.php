@@ -1,15 +1,12 @@
-<!-- resources/views/user/edit.blade.php -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit User</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+@extends('layouts/main')
 
+@section('content')
+
+    <div class="container-fluid mt-6 mb-6">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+            <div class="card shadow rounded">
 <body style="background: lightgray">
     <div class="container mt-5">
         <div class="row">
@@ -40,8 +37,23 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+    
+    @section('css')
+        @parent
+        <style>
+            .card-header {
+                border-bottom: 0;
+            }
 
-</html>
+            .form-group {
+                margin-bottom: 29px;
+            }
+
+            .btn-primary,
+            .btn-warning {
+                padding: 12px;
+            }
+        </style>
+
+    @endsection
+@endsection

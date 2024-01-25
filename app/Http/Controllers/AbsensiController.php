@@ -87,7 +87,7 @@ class AbsensiController extends Controller
                             ->join('siswa1', 'absensi_siswa.id_siswa', '=', 'siswa1.id')
                             ->join('absensi', 'absensi_siswa.absensi_id', '=', 'absensi.absensi_id')
                             ->join('kelas', 'siswa1.kelas', '=', 'kelas.id')
-                            ->join('users', 'users.id',  'kelas.kelas') // Sesuaikan join condition dengan relasi sebenarnya
+                            ->join('users', 'users.id',  'kelas.kelas')
                             ->select(
                                 'absensi_siswa.absensisiswa_id',
                                 'siswa1.nama_siswa',
@@ -108,7 +108,7 @@ public function Rekap() {
                         ->join('siswa1', 'absensi_siswa.id_siswa', '=', 'siswa1.id')
                         ->join('absensi', 'absensi_siswa.absensi_id', '=', 'absensi.absensi_id')
                         ->join('kelas', 'siswa1.kelas', '=', 'kelas.id')
-                        ->join('users', 'users.id',  'kelas.kelas') // Sesuaikan join condition dengan relasi sebenarnya
+                        ->join('users', 'users.id',  'kelas.kelas') 
                         ->select(
                             'absensi_siswa.absensisiswa_id',
                             'siswa1.nama_siswa',
@@ -120,7 +120,7 @@ public function Rekap() {
                   
                         );
 
-                        $data = DB::select(DB::raw("SELECT * FROM absensi_siswa"));
+                        // $data = DB::select(DB::raw("SELECT * FROM absensi_siswa"));
                         return view('absensi.Rekap', compact('data'));
 }
     
